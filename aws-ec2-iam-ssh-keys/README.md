@@ -5,7 +5,8 @@ list_iam_ssh_keys.{py,rb} are experiments listing out all ssh keys, the actual
 check is done in bash using the aws CLI
 
 This isn't ideal:
-- No central password management (unauthenticated sudo)
+- No central password management (unauthenticated sudo, no user passwords set
+  on useradd)
 - Everyone in the ssh_users group has root access. If you get into finer group
   use then use AD/LDAP: it'll be easier to manage group mapping
 - There's a notable delay when logging in (3-4 seconds). It might be worth
