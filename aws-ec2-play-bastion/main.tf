@@ -20,15 +20,15 @@ resource "aws_subnet" "play_public_a" {
     }
 }
 
-#resource "aws_subnet" "play_public_b" {
-#    vpc_id = "${aws_vpc.play.id}"
-#    cidr_block = "10.30.0.128/25"
-#    availability_zone = "eu-west-2b"
-#
-#    tags {
-#        Name = "play_public_b"
-#    }
-#}
+resource "aws_subnet" "play_public_b" {
+    vpc_id = "${aws_vpc.play.id}"
+    cidr_block = "10.30.0.128/25"
+    availability_zone = "eu-west-2b"
+
+    tags {
+        Name = "play_public_b"
+    }
+}
 
 resource "aws_subnet" "play_priv_a" {
     vpc_id = "${aws_vpc.play.id}"
@@ -40,15 +40,15 @@ resource "aws_subnet" "play_priv_a" {
     }
 }
 
-#resource "aws_subnet" "play_priv_b" {
-#    vpc_id = "${aws_vpc.play.id}"
-#    cidr_block = "10.30.1.128/25"
-#    availability_zone = "eu-west-2b"
-#
-#    tags {
-#        Name = "play_priv_b"
-#    }
-#}
+resource "aws_subnet" "play_priv_b" {
+    vpc_id = "${aws_vpc.play.id}"
+    cidr_block = "10.30.1.128/25"
+    availability_zone = "eu-west-2b"
+
+    tags {
+        Name = "play_priv_b"
+    }
+}
 
 resource "aws_internet_gateway" "play" {
     vpc_id = "${aws_vpc.play.id}"
@@ -77,10 +77,10 @@ resource "aws_route_table_association" "play_int_a" {
     route_table_id = "${aws_route_table.play_int.id}"
 }
 
-#resource "aws_route_table_association" "play_int_b" {
-#    subnet_id = "${aws_subnet.play_public_b.id}"
-#    route_table_id = "${aws_route_table.play_int.id}"
-#}
+resource "aws_route_table_association" "play_int_b" {
+    subnet_id = "${aws_subnet.play_public_b.id}"
+    route_table_id = "${aws_route_table.play_int.id}"
+}
 
 resource "aws_eip" "nat" {
 }
@@ -111,10 +111,10 @@ resource "aws_route_table_association" "play_nat_a" {
     route_table_id = "${aws_route_table.play_nat.id}"
 }
 
-#resource "aws_route_table_association" "play_nat_b" {
-#    subnet_id = "${aws_subnet.play_priv_b.id}"
-#    route_table_id = "${aws_route_table.play_nat.id}"
-#}
+resource "aws_route_table_association" "play_nat_b" {
+    subnet_id = "${aws_subnet.play_priv_b.id}"
+    route_table_id = "${aws_route_table.play_nat.id}"
+}
 
 resource "aws_security_group" "play_bastion" {
     vpc_id = "${aws_vpc.play.id}"
@@ -135,7 +135,7 @@ resource "aws_instance" "play_bastion" {
     # Amazon Linux AMI 2016.09.1 (HVM), SSD Volume Type
     ami = "ami-f1949e95"
     subnet_id = "${aws_subnet.play_public_a.id}"
-    security_groups = ["${aws_security_group.play_bastion.id}"]
+    vpc_security_group_ids = ["${aws_security_group.play_bastion.id}"]
     instance_type = "t2.micro"
     key_name = "terraform"
 
