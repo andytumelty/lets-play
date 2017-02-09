@@ -7,7 +7,7 @@ data "terraform_remote_state" "bootstrap" {
 
     config {
         bucket = "xono-terraform-state"
-        key = "aws-s3-bootstrap/terraform.tfstate"
+        key = "aws-bootstrap/terraform.tfstate"
         region = "eu-west-2"
     }
 }
